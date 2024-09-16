@@ -13,7 +13,6 @@ import java.util.UUID;
 public class UsersController {
     @Autowired
     private UsersRepository userRepository;
-
     @Autowired
     private UuidGenerator uuidGenerator;
 

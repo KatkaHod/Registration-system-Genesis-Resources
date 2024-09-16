@@ -13,14 +13,21 @@ public class UsersRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+
+    //added constants for better code maintenance
+    private static final String INSERT_USER_SQL = "INSERT INTO users (Name, Surname, Person_ID, Uuid) VALUES (?, ?, ?, ?)";
+    private static final String SELECT_USER_BY_ID_SQL = "SELECT ID, Name, Surname FROM users WHERE ID = ?";
+    private static final String SELECT_ALL_USERS_SQL = "SELECT ID, Name, Surname FROM users";
+    private static final String UPDATE_USER_SQL = "UPDATE users SET Name = ?, Surname = ? WHERE ID = ?";
+    private static final String DELETE_USER_SQL = "DELETE FROM users WHERE ID = ?";
+
+
     public void createUser(UserModel user) {
-        String sql = "INSERT INTO Users (Name, Surname, Person_ID, Uuid) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getPersonId(), user.getUuid());
+        jdbcTemplate.update(INSERT_USER_SQL, user.getName(), user.getSurname(), user.getPersonId(), user.getUuid());
     }
 
     public UserModel getUserById(Long id) {
-        String sql = "SELECT ID, Name, Surname FROM users WHERE ID = ?";
-        return jdbcTemplate.query(sql, new Object[]{id}, rs -> {
+        return jdbcTemplate.query(SELECT_USER_BY_ID_SQL, new Object[]{id}, rs -> {
             if (rs.next()) {
                 UserModel user = new UserModel();
 
@@ -33,10 +40,8 @@ public class UsersRepository {
         });
     }
 
-
     public List<UserModel> getAllUsers() {
-        String sql = "SELECT ID, Name, Surname FROM users";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+        return jdbcTemplate.query(SELECT_ALL_USERS_SQL, (rs, rowNum) -> {
             UserModel user = new UserModel();
             user.setId(rs.getLong("ID"));
             user.setName(rs.getString("Name"));
@@ -46,13 +51,11 @@ public class UsersRepository {
     }
 
     public void updateUser(Long id, String name, String surname) {
-        String sql = "UPDATE users SET Name = ?, Surname = ? WHERE ID = ?";
-        jdbcTemplate.update(sql, name, surname, id);
+        jdbcTemplate.update(UPDATE_USER_SQL, name, surname, id);
     }
 
     public void deleteUser(Long id) {
-        String sql = "DELETE FROM users WHERE ID = ?";
-        jdbcTemplate.update(sql, id);
+        jdbcTemplate.update(DELETE_USER_SQL, id);
     }
 
 

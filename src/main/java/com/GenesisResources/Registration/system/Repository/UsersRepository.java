@@ -45,29 +45,15 @@ public class UsersRepository {
         });
     }
 
+    public void updateUser(Long id, String name, String surname) {
+        String sql = "UPDATE users SET Name = ?, Surname = ? WHERE ID = ?";
+        jdbcTemplate.update(sql, name, surname, id);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public void deleteUser(Long id) {
+        String sql = "DELETE FROM users WHERE ID = ?";
+        jdbcTemplate.update(sql, id);
+    }
 
 
 }

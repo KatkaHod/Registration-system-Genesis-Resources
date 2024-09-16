@@ -13,7 +13,7 @@ public class UserModel {
     private String PersonId;
     private UUID Uuid;
 
-    public Long getID() {
+    public Long getId() {
         return ID;
     }
 

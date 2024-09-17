@@ -27,17 +27,13 @@ public class UsersRepository {
     }
 
     public UserModel getUserById(Long id) {
-        return jdbcTemplate.query(SELECT_USER_BY_ID_SQL, new Object[]{id}, rs -> {
-            if (rs.next()) {
-                UserModel user = new UserModel();
-
-                user.setId(rs.getLong("ID"));
-                user.setName(rs.getString("Name"));
-                user.setSurname(rs.getString("Surname"));
-                return user;
-            }
-            return null;
-        });
+        return jdbcTemplate.queryForObject(SELECT_USER_BY_ID_SQL, (rs, rowNum) -> {
+            UserModel user = new UserModel();
+            user.setId(rs.getLong("ID"));
+            user.setName(rs.getString("Name"));
+            user.setSurname(rs.getString("Surname"));
+            return user;
+        }, id);
     }
 
     public List<UserModel> getAllUsers() {

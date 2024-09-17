@@ -1,6 +1,7 @@
 package com.GenesisResources.Registration.system.Repository;
 
 import com.GenesisResources.Registration.system.Model.UserModel;
+import com.GenesisResources.Registration.system.Service.IDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,10 +13,12 @@ public class UsersRepository {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
+    @Autowired
+    IDGenerator idGenerator;
 
 
     //added constants for better code maintenance
-    private static final String INSERT_USER_SQL = "INSERT INTO users (Name, Surname, Person_ID, Uuid) VALUES (?, ?, ?, ?)";
+    private static final String INSERT_USER_SQL = "INSERT INTO users (ID, Name, Surname, PersonID, Uuid) VALUES (?, ?, ?, ?, ?)";
     private static final String SELECT_USER_BY_ID_SQL = "SELECT ID, Name, Surname FROM users WHERE ID = ?";
     private static final String SELECT_ALL_USERS_SQL = "SELECT ID, Name, Surname FROM users";
     private static final String UPDATE_USER_SQL = "UPDATE users SET Name = ?, Surname = ? WHERE ID = ?";
@@ -23,7 +26,7 @@ public class UsersRepository {
 
 
     public void createUser(UserModel user) {
-        jdbcTemplate.update(INSERT_USER_SQL, user.getName(), user.getSurname(), user.getPersonId(), user.getUuid());
+        jdbcTemplate.update(INSERT_USER_SQL, user.getId(), user.getName(), user.getSurname(), user.getPersonId(), user.getUuid());
     }
 
     public UserModel getUserById(Long id) {

@@ -10,8 +10,8 @@ public class UserModel {
     private Long ID;
     private String Name;
     private String Surname;
-    private String PersonId;
-    private UUID Uuid;
+    private String PersonID;
+    private String Uuid;
 
     public Long getId() {
         return ID;
@@ -38,18 +38,18 @@ public class UserModel {
     }
 
     public String getPersonId() {
-        return PersonId;
+        return PersonID;
     }
 
     public void setPersonId(String personId) {
-        PersonId = personId;
+        PersonID = personId;
     }
 
-    public UUID getUuid() {
+    public String getUuid() {
         return Uuid;
     }
 
-    public void setUuid(UUID uuid) {
+    public void setUuid(String uuid) {
         Uuid = uuid;
     }
 }

@@ -2,8 +2,12 @@ package com.GenesisResources.Registration.system.Controller;
 
 import com.GenesisResources.Registration.system.Model.UserModel;
 import com.GenesisResources.Registration.system.Repository.UsersRepository;
+import com.GenesisResources.Registration.system.Service.IDGenerator;
 import com.GenesisResources.Registration.system.Service.UuidGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
@@ -15,17 +19,29 @@ public class UsersController {
     private UsersRepository userRepository;
     @Autowired
     private UuidGenerator uuidGenerator;
+    @Autowired
+    IDGenerator idGenerator;
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
+        @PostMapping("/user")
+        public ResponseEntity<String> createNewUser(@RequestBody UserModel user) {
+            try {
+                String uuid = uuidGenerator.generateUuid();
+                user.setUuid(uuid);
 
+                Long newId = (long) idGenerator.generateId();
+                user.setId(newId);
 
-    @PostMapping("/user")
-    public void createNewUser(@RequestBody UserModel user) {
-        String uuid = uuidGenerator.generateUuid();
-        user.setUuid(UUID.fromString(uuid));
+                userRepository.createUser(user);
 
-        userRepository.createUser(user);
+                return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+            }
+        }
 
-    }
 
     @GetMapping("/user/{ID}")
     public UserModel getUser(@PathVariable("id") Long id) {

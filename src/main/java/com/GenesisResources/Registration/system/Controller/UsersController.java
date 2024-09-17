@@ -2,7 +2,6 @@ package com.GenesisResources.Registration.system.Controller;
 
 import com.GenesisResources.Registration.system.Model.UserModel;
 import com.GenesisResources.Registration.system.Repository.UsersRepository;
-import com.GenesisResources.Registration.system.Service.IDGenerator;
 import com.GenesisResources.Registration.system.Service.UuidGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1")
@@ -19,20 +17,13 @@ public class UsersController {
     private UsersRepository userRepository;
     @Autowired
     private UuidGenerator uuidGenerator;
-    @Autowired
-    IDGenerator idGenerator;
+
     @Autowired
     JdbcTemplate jdbcTemplate;
 
         @PostMapping("/user")
         public ResponseEntity<String> createNewUser(@RequestBody UserModel user) {
             try {
-                String uuid = uuidGenerator.generateUuid();
-                user.setUuid(uuid);
-
-                Long newId = (long) idGenerator.generateId();
-                user.setId(newId);
-
                 userRepository.createUser(user);
 
                 return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");

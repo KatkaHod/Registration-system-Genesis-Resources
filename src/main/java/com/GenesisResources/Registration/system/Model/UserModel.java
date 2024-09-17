@@ -5,13 +5,14 @@ import java.util.UUID;
 
 
 public class UserModel {
-
-    //Using JDBC, you do not need to have an entity in the sense of a JPA. Just have a POJO (Plain Old Java Object).
     private Long ID;
     private String Name;
     private String Surname;
     private String PersonID;
     private String Uuid;
+
+    public UserModel() {
+    }
 
     public Long getId() {
         return ID;
@@ -19,6 +20,18 @@ public class UserModel {
 
     public void setId(Long ID) {
         this.ID = ID;
+    }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public String getPersonID() {
+        return PersonID;
+    }
+
+    public void setPersonID(String personID) {
+        PersonID = personID;
     }
 
     public String getName() {

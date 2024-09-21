@@ -4,6 +4,7 @@ import com.GenesisResources.Registration.system.Model.UserModel;
 import com.GenesisResources.Registration.system.Repository.UsersRepository;
 import com.GenesisResources.Registration.system.Service.UuidGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -93,11 +94,23 @@ public class UsersController {
         }
     }
 
-
     @DeleteMapping("/user/{ID}")
-    public void deleteUser(@PathVariable("ID") Long ID) {
-        userRepository.deleteUser(ID);
+    public ResponseEntity<?> deleteUser(@PathVariable("ID") Long ID) {
+        try {
+            if (ID == null) {
+                return ResponseEntity.badRequest().body("User ID must be provided for deletion");
+            }
+
+            userRepository.deleteUser(ID);
+            return ResponseEntity.ok("User deleted successfully");
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with ID: " + ID);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
+        }
     }
+
 
 
 }

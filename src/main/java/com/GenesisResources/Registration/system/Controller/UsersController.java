@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -21,17 +23,23 @@ public class UsersController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-        @PostMapping("/user")
-        public ResponseEntity<String> createNewUser(@RequestBody UserModel user) {
-            try {
-                userRepository.createUser(user);
+    @PostMapping("/user")
+    public ResponseEntity<?> createNewUser(@RequestBody UserModel user) {
+        System.out.println("Received UserModel: " + user);
+        System.out.println("Name: " + user.getName());
+        System.out.println("Surname: " + user.getSurname());
+        System.out.println("PersonID: " + user.getPersonID());
 
-                return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
-            } catch (Exception e) {
-                e.printStackTrace();
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
-            }
+        try {
+            userRepository.createUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
         }
+    }
+
+
 
 
     @GetMapping("/user/{ID}")

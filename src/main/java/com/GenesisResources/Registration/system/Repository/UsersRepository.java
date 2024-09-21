@@ -30,7 +30,9 @@ public class UsersRepository {
         String uuid = uuidGenerator.generateUuid();
         user.setUuid(uuid);
 
-        jdbcTemplate.update(INSERT_USER_SQL, user.getName(), user.getSurname(), user.getPersonId(), user.getUuid());
+        System.out.println("Inserting User: Name=" + user.getName() + ", Surname=" + user.getSurname() + ", PersonID=" + user.getPersonID() + ", Uuid=" + user.getUuid());
+
+        jdbcTemplate.update(INSERT_USER_SQL, user.getName(), user.getSurname(), user.getPersonID(), user.getUuid());
     }
 
     public UserModel getUserById(Long id) {

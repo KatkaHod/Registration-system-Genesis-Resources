@@ -11,20 +11,12 @@ public class UserModel {
     public UserModel() {
     }
 
-    public void setID(Long ID) {
-        this.ID = ID;
-    }
-
     public Long getID() {
         return ID;
     }
 
-    public String getPersonID() {
-        return PersonID;
-    }
-
-    public void setPersonID(String personID) {
-        PersonID = personID;
+    public void setID(Long ID) {
+        this.ID = ID;
     }
 
     public String getName() {
@@ -43,12 +35,12 @@ public class UserModel {
         Surname = surname;
     }
 
-    public String getPersonId() {
+    public String getPersonID() {
         return PersonID;
     }
 
-    public void setPersonId(String personId) {
-        PersonID = personId;
+    public void setPersonID(String personID) {
+        PersonID = personID;
     }
 
     public String getUuid() {
@@ -57,5 +49,16 @@ public class UserModel {
 
     public void setUuid(String uuid) {
         Uuid = uuid;
+    }
+
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "ID=" + ID +
+                ", Name='" + Name + '\'' +
+                ", Surname='" + Surname + '\'' +
+                ", PersonID='" + PersonID + '\'' +
+                ", Uuid='" + Uuid + '\'' +
+                '}';
     }
 }

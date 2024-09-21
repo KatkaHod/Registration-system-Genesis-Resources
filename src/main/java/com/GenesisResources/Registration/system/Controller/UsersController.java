@@ -77,12 +77,22 @@ public class UsersController {
 
 
     @PutMapping("/user")
-    public void updateUser(@RequestBody UserModel user) {
-        if (user.getID() == null) {
-            throw new IllegalArgumentException("User ID must be provided for update");
+    public ResponseEntity<?> updateUser(@RequestBody UserModel user) {
+        try {
+            if (user.getID() == null) {
+                return ResponseEntity.badRequest().body("User ID must be provided for update");
+            }
+
+            userRepository.updateUser(user.getID(), user.getName(), user.getSurname());
+            return ResponseEntity.ok("User updated successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
         }
-        userRepository.updateUser(user.getID(), user.getName(), user.getSurname());
     }
+
 
     @DeleteMapping("/user/{ID}")
     public void deleteUser(@PathVariable("ID") Long ID) {

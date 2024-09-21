@@ -58,9 +58,23 @@ public class UsersController {
 
 
     @GetMapping("/users")
-    public List<UserModel> getAllUsers() {
-        return userRepository.getAllUsers();
+    public ResponseEntity<?> getAllUsers() {
+        try {
+            List<UserModel> users = userRepository.getAllUsers();
+
+            if (users.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No users found");
+            }
+
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
+        }
     }
+
+
+
 
     @PutMapping("/user")
     public void updateUser(@RequestBody UserModel user) {

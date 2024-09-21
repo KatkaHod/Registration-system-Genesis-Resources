@@ -36,7 +36,7 @@ public class UsersRepository {
     public UserModel getUserById(Long id) {
         return jdbcTemplate.queryForObject(SELECT_USER_BY_ID_SQL, (rs, rowNum) -> {
             UserModel user = new UserModel();
-            user.setId(rs.getLong("ID"));
+            user.setID(rs.getLong("ID"));
             user.setName(rs.getString("Name"));
             user.setSurname(rs.getString("Surname"));
             return user;
@@ -46,19 +46,19 @@ public class UsersRepository {
     public List<UserModel> getAllUsers() {
         return jdbcTemplate.query(SELECT_ALL_USERS_SQL, (rs, rowNum) -> {
             UserModel user = new UserModel();
-            user.setId(rs.getLong("ID"));
+            user.setID(rs.getLong("ID"));
             user.setName(rs.getString("Name"));
             user.setSurname(rs.getString("Surname"));
             return user;
         });
     }
 
-    public void updateUser(Long id, String name, String surname) {
-        jdbcTemplate.update(UPDATE_USER_SQL, name, surname, id);
+    public void updateUser(Long ID, String Name, String Surname) {
+        jdbcTemplate.update(UPDATE_USER_SQL, Name, Surname, ID);
     }
 
-    public void deleteUser(Long id) {
-        jdbcTemplate.update(DELETE_USER_SQL, id);
+    public void deleteUser(Long ID) {
+        jdbcTemplate.update(DELETE_USER_SQL, ID);
     }
 
 

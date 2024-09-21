@@ -1,7 +1,4 @@
 package com.GenesisResources.Registration.system.Model;
-import com.GenesisResources.Registration.system.Service.UuidGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import java.util.UUID;
 
 
 public class UserModel {
@@ -14,11 +11,7 @@ public class UserModel {
     public UserModel() {
     }
 
-    public Long getId() {
-        return ID;
-    }
-
-    public void setId(Long ID) {
+    public void setID(Long ID) {
         this.ID = ID;
     }
 

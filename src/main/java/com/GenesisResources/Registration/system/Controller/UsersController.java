@@ -46,16 +46,15 @@ public class UsersController {
 
     @PutMapping("/user")
     public void updateUser(@RequestBody UserModel user) {
-        if (user.getId() == null) {
+        if (user.getID() == null) {
             throw new IllegalArgumentException("User ID must be provided for update");
         }
-
-        userRepository.updateUser(user.getId(), user.getName(), user.getSurname());
+        userRepository.updateUser(user.getID(), user.getName(), user.getSurname());
     }
 
-    @DeleteMapping("/user/{id}")
-    public void deleteUser(@PathVariable("id") Long id) {
-        userRepository.deleteUser(id);
+    @DeleteMapping("/user/{ID}")
+    public void deleteUser(@PathVariable("ID") Long ID) {
+        userRepository.deleteUser(ID);
     }
 
 

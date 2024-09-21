@@ -75,8 +75,6 @@ public class UsersController {
     }
 
 
-
-
     @PutMapping("/user")
     public ResponseEntity<?> updateUser(@RequestBody UserModel user) {
         try {

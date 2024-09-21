@@ -40,12 +40,22 @@ public class UsersController {
     }
 
 
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getUser(@PathVariable("id") Long id) {
+        try {
+            UserModel user = userRepository.getUserById(id);
 
-
-    @GetMapping("/user/{ID}")
-    public UserModel getUser(@PathVariable("id") Long id) {
-        return userRepository.getUserById(id);
+            if (user != null) {
+                return ResponseEntity.ok(user);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
+        }
     }
+
 
     @GetMapping("/users")
     public List<UserModel> getAllUsers() {

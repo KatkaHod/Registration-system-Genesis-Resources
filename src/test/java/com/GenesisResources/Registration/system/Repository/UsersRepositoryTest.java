@@ -122,10 +122,11 @@ public class UsersRepositoryTest {
 
     @Test
     public void deleteUserTest() {
+        Long ID = 1L;
+        usersRepository.deleteUser(ID);
+        verify(jdbcTemplate).update(eq(Sql.getDeleteUserSql()), eq(ID));
 
     }
-
-
 
 
 }

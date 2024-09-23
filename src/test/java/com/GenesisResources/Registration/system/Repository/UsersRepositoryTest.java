@@ -104,16 +104,19 @@ public class UsersRepositoryTest {
             assertEquals(expectedUsers.get(i).getName(), actualUsers.get(i).getName());
             assertEquals(expectedUsers.get(i).getSurname(), actualUsers.get(i).getSurname());
         }
-
         verify(jdbcTemplate).query(eq(Sql.getSelectAllUsersSql()), any(RowMapper.class));
     }
 
 
-
-
-
     @Test
     public void updateUserTest() {
+        Long ID = 1L;
+        String updatedName = "Marie";
+        String updatedSurname = "Novakova";
+
+        usersRepository.updateUser(ID, updatedName, updatedSurname);
+
+        verify(jdbcTemplate).update(eq(Sql.getUpdateUserSql()), eq(updatedName), eq(updatedSurname), eq(ID));
 
     }
 

@@ -9,6 +9,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.eq;
+import com.GenesisResources.Registration.system.Settings.Sql;
 
 
 public class UsersRepositoryTest {
@@ -43,7 +44,7 @@ public class UsersRepositoryTest {
 
         usersRepository.createUser(userModel);
 
-        verify(jdbcTemplate).update(eq(usersRepository.getInsertUserSql()),
+        verify(jdbcTemplate).update(eq(Sql.getInsertUserSql()),
                 eq("Katerina"),
                 eq("Hodslavska"),
                 eq("iM5sO6zXcW7v"),
@@ -55,6 +56,13 @@ public class UsersRepositoryTest {
 
     @Test
     public void getUserByIdTest() {
+        Long ID = 1L;
+        UserModel userModel = new UserModel();
+
+        userModel.setID(ID);
+        userModel.setName("Katerina");
+        userModel.setSurname("Hodslavska");
+
 
     }
 

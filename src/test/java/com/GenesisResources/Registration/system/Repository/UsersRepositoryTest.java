@@ -1,5 +1,5 @@
 package com.GenesisResources.Registration.system.Repository;
-
+import com.GenesisResources.Registration.system.Model.UserModel;
 import com.GenesisResources.Registration.system.Service.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,11 +7,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.jdbc.core.JdbcTemplate;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.eq;
+
 
 public class UsersRepositoryTest {
-
-    /* Required 'Mockito' dependency (has been added)
-    * Test the UsersRepository class that provides the internal logic with the database. */
 
     @Mock
     private JdbcTemplate jdbcTemplate;
@@ -21,18 +21,39 @@ public class UsersRepositoryTest {
 
     @InjectMocks
     private UsersRepository usersRepository;
+    private UserModel userModel;
+
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
+
     @Test
-    public void testCreateUser() {
+    void testCreateUser() {
+        UserModel userModel = new UserModel();
+
+        userModel.setName("Katerina");
+        userModel.setSurname("Hodslavska");
+        userModel.setPersonID("iM5sO6zXcW7v");
+
+        String generatedUuid = "123e4567-e89b-12d3-a456-426614174000";
+        when(uuidGenerator.generateUuid()).thenReturn(generatedUuid);
+
+        usersRepository.createUser(userModel);
+
+        verify(jdbcTemplate).update(eq(usersRepository.getInsertUserSql()),
+                eq("Katerina"),
+                eq("Hodslavska"),
+                eq("iM5sO6zXcW7v"),
+                eq(generatedUuid)
+        );
 
     }
 
-   @Test
+
+    @Test
     public void getUserByIdTest() {
 
     }

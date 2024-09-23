@@ -17,8 +17,11 @@ public class UsersRepository {
     UuidGenerator uuidGenerator;
 
 
-    //added constants for better code maintenance
     private static final String INSERT_USER_SQL = "INSERT INTO users (Name, Surname, PersonID, Uuid) VALUES (?, ?, ?, ?)";
+
+    public String getInsertUserSql() {
+        return INSERT_USER_SQL;
+    }
     private static final String SELECT_USER_BY_ID_SQL = "SELECT ID, Name, Surname FROM users WHERE ID = ?";
     private static final String SELECT_ALL_USERS_SQL = "SELECT ID, Name, Surname FROM users";
     private static final String UPDATE_USER_SQL = "UPDATE users SET Name = ?, Surname = ? WHERE ID = ?";

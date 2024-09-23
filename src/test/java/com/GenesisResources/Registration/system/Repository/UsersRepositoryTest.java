@@ -7,9 +7,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.eq;
 import com.GenesisResources.Registration.system.Settings.Sql;
+import org.springframework.jdbc.core.RowMapper;
 
 
 public class UsersRepositoryTest {
@@ -57,14 +60,24 @@ public class UsersRepositoryTest {
     @Test
     public void getUserByIdTest() {
         Long ID = 1L;
-        UserModel userModel = new UserModel();
+        UserModel expectedUser = new UserModel();
 
-        userModel.setID(ID);
-        userModel.setName("Katerina");
-        userModel.setSurname("Hodslavska");
+        expectedUser.setID(ID);
+        expectedUser.setName("Katerina");
+        expectedUser.setSurname("Hodslavska");
 
+        when(jdbcTemplate.queryForObject(eq(Sql.getSelectUserByIdSql()), any(RowMapper.class), eq(ID)))
+                .thenReturn(expectedUser);
 
+        UserModel actualUser = usersRepository.getUserById(ID);
+
+        assertEquals(expectedUser.getID(), actualUser.getID());
+        assertEquals(expectedUser.getName(), actualUser.getName());
+        assertEquals(expectedUser.getSurname(), actualUser.getSurname());
+
+        verify(jdbcTemplate).queryForObject(eq(Sql.getSelectUserByIdSql()), any(RowMapper.class), eq(ID));
     }
+
 
     @Test
     public void getAllUsersTest() {

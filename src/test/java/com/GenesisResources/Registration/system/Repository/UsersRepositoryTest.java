@@ -7,12 +7,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.jdbc.core.JdbcTemplate;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.eq;
 import com.GenesisResources.Registration.system.Settings.Sql;
 import org.springframework.jdbc.core.RowMapper;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class UsersRepositoryTest {
@@ -66,8 +67,7 @@ public class UsersRepositoryTest {
         expectedUser.setName("Katerina");
         expectedUser.setSurname("Hodslavska");
 
-        when(jdbcTemplate.queryForObject(eq(Sql.getSelectUserByIdSql()), any(RowMapper.class), eq(ID)))
-                .thenReturn(expectedUser);
+        when(jdbcTemplate.queryForObject(eq(Sql.getSelectUserByIdSql()), any(RowMapper.class), eq(ID))).thenReturn(expectedUser);
 
         UserModel actualUser = usersRepository.getUserById(ID);
 
@@ -81,8 +81,36 @@ public class UsersRepositoryTest {
 
     @Test
     public void getAllUsersTest() {
+        UserModel firstUser = new UserModel();
+        firstUser.setID(2L);
+        firstUser.setName("Katerina");
+        firstUser.setSurname("Hodslavska");
 
+        UserModel secondUser = new UserModel();
+        secondUser.setID(3L);
+        secondUser.setName("Anna");
+        secondUser.setSurname("Novakova");
+
+        List<UserModel> expectedUsers = Arrays.asList(firstUser, secondUser);
+
+        when(jdbcTemplate.query(eq(Sql.getSelectAllUsersSql()), any(RowMapper.class))).thenReturn(expectedUsers);
+
+        List<UserModel> actualUsers = usersRepository.getAllUsers();
+
+        assertEquals(expectedUsers.size(), actualUsers.size());
+
+        for (int i = 0; i < expectedUsers.size(); i++) {
+            assertEquals(expectedUsers.get(i).getID(), actualUsers.get(i).getID());
+            assertEquals(expectedUsers.get(i).getName(), actualUsers.get(i).getName());
+            assertEquals(expectedUsers.get(i).getSurname(), actualUsers.get(i).getSurname());
+        }
+
+        verify(jdbcTemplate).query(eq(Sql.getSelectAllUsersSql()), any(RowMapper.class));
     }
+
+
+
+
 
     @Test
     public void updateUserTest() {

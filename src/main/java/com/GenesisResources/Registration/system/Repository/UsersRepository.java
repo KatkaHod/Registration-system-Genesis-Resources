@@ -10,12 +10,10 @@ import java.util.List;
 
 @Repository
 public class UsersRepository {
-
     @Autowired
     JdbcTemplate jdbcTemplate;
     @Autowired
     UuidGenerator uuidGenerator;
-
 
     //no need to generate a new ID because it is auto-increment in database
     public void createUser(UserModel user) {
@@ -27,6 +25,7 @@ public class UsersRepository {
         jdbcTemplate.update(Sql.getInsertUserSql(), user.getName(), user.getSurname(), user.getPersonID(), user.getUuid());
     }
 
+    //gets a user from the database by id using jdbcTemplate, converts the result into a UserModel and returns the user with the ID, Name and Surname set.
     public UserModel getUserById(Long id) {
         return jdbcTemplate.queryForObject(Sql.getSelectUserByIdSql(), (rs, rowNum) -> {
             UserModel user = new UserModel();

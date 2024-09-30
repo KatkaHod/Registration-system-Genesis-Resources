@@ -1,7 +1,6 @@
 package com.GenesisResources.Registration.system.Settings;
 
 public class Sql {
-
     private static final String INSERT_USER_SQL = "INSERT INTO users (Name, Surname, PersonID, Uuid) VALUES (?, ?, ?, ?)";
     private static final String SELECT_USER_BY_ID_SQL = "SELECT ID, Name, Surname FROM users WHERE ID = ?";
     private static final String SELECT_ALL_USERS_SQL = "SELECT ID, Name, Surname FROM users";
@@ -27,7 +26,5 @@ public class Sql {
     public static String getDeleteUserSql() {
         return DELETE_USER_SQL;
     }
-
-
 
 }
